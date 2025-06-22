@@ -1,10 +1,15 @@
+import db from "../database/db.js";
+
 export const getUser = (req, res) => {
-  res.send("Hello, this is the data you requested!");
+  res.send("Hello, this is the data!");
 };
 
 export const postData = (req, res) => {
-  console.log(req);
+  const { name, email, password } = req.body;
 
-  const { email, password } = req.body;
-  res.send({ email, password });
+  const q = `INSERT INTO user (name, email, password) VALUES (?,?,?)`;
+  db.query(q, [name, email, password], (err, result) => {
+    if (err) return res.send({ message: "query garda error aayo", err });
+    return res.send({ message: "Data inserted successfully", result });
+  });
 };
